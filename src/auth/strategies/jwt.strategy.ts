@@ -22,4 +22,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.userModel.findById(_id);
     return user;
   }
+  //bu yerda pick UserDocumentdan faqat _id ni olib beradi;
+  //pickni orniga Exclude yozilsa faqat _id ni tashlab qolganini olib beradi
 }
