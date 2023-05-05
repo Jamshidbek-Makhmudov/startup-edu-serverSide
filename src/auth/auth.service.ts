@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { compare, genSalt, hash } from 'bcryptjs';
@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/user/user.model';
 import { LoginAuthDto } from './dto/login.dto';
 import { RegisterAuthDto } from './dto/register.dto';
+import { TokenDto } from './dto/token.dto';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +39,19 @@ export class AuthService {
     const token = await this.issueTokenPair(String(existUser._id));
     return { user: this.getUserField(existUser), ...token };
   }
+  //access getNewToken
+  async getNewTokens({ refreshToken }: TokenDto) {
+    if (!refreshToken) throw new UnauthorizedException('Please sign in!');
+
+    const result = await this.jwtService.verifyAsync(refreshToken);
+
+    if (!result) throw new UnauthorizedException('Invalid or expired token!');
+
+    const user = await this.userModel.findById(result._id);
+    const token = await this.issueTokenPair(String(user._id));
+    return { user: this.getUserField(user), ...token };
+  }
+
   //function for return exist email error
   async isExistUser(email: string): Promise<UserDocument> {
     const existUser = await this.userModel.findOne({ email });
