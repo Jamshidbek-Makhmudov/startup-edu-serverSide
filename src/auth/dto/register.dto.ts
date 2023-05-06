@@ -10,7 +10,7 @@ export class RegisterAuthDto {
   @IsString()
   @MinLength(6)
   password: string;
-  @IsNotEmpty()
-  @IsString()
+  // @IsNotEmpty()
+  // @IsString()
   fullName: string;
 }
