@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import * as SendGrid from '@sendgrid/mail';
@@ -17,8 +22,13 @@ export class MailService {
     SendGrid.setApiKey(this.configService.get<string>('SEND_GRID_KEY'));
   }
 
-  async sendOtpVerification(email: string) {
+  async sendOtpVerification(email: string, isUser: boolean) {
     if (!email) throw new ForbiddenException('Email is required');
+
+    if (isUser) {
+      const existUser = await this.userModel.findOne({ email });
+      if (!existUser) throw new UnauthorizedException('User not found');
+    }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
     const salt = await genSalt(10);
@@ -27,30 +37,30 @@ export class MailService {
       to: email,
       subject: 'Verification email',
       //from: 'jamshid.makh94@gmail.com',
-      from: 'war7lock@naver.com',
+      from: 'studentsmernbootcamp@gmail.com',
       html: `
-				<h1> Action Required: One-Time Verification Code </h1>
-			<h2>	You are receiving this email because a request was made for a one-time code that can be used for authentication. </h2>
-			<h3>	Please enter the following code for verification: </h3> <h1>	${otp} </h1>
-		
-			<p>	If you did not request this change, please change your password or use the chat in the website user interface to contact us.</p>
-				
-			`,
+        <h1> Action Required: One-Time Verification Code </h1>
+      <h2>	You are receiving this email because a request was made for a one-time code that can be used for authentication. </h2>
+      <h3>	Please enter the following code for verification: </h3> <h1>	${otp} </h1>
+    
+      <p>	If you did not request this change, please change your password or use the chat in the website user interface to contact us.</p>
+    
+      `,
     };
-    await this.otpModel.create({ email: email, otp: hashedOtp, expireAt: Date.now() + 300000 }); //5 minutes
+    await this.otpModel.create({ email: email, otp: hashedOtp, expireAt: Date.now() + 3600000 });
     await SendGrid.send(emailData);
     return 'Success';
   }
 
   async verifyOtp(email: string, otpVerification: string) {
-    if (!otpVerification) throw new BadRequestException('Please enter OTP Verfication code!');
+    if (!otpVerification) throw new BadRequestException('Please send OTP Verfication code');
 
     const userExistOtp = await this.otpModel.find({ email });
     const { expireAt, otp } = userExistOtp.slice(-1)[0];
 
     if (expireAt < new Date()) {
       await this.otpModel.deleteMany({ email });
-      throw new BadRequestException('Code Expired, please try again!');
+      throw new BadRequestException('Expire code, please try again');
     }
 
     const validOtp = await compare(otpVerification, otp);

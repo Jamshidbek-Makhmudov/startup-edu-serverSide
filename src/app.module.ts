@@ -4,8 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { getMongoDBConfig } from './config/mongo.config';
 import { CourseModule } from './course/course.module';
-import { UserModule } from './user/user.module';
 import { MailModule } from './mail/mail.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
