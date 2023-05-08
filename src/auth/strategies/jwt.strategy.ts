@@ -18,10 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: configService.get<string>('SECRET_JWT'),
     });
   }
+
   async validate({ _id }: Pick<UserDocument, '_id'>) {
     const user = await this.userModel.findById(_id);
     return user;
   }
-  //bu yerda pick UserDocumentdan faqat _id ni olib beradi;
-  //pickni orniga Exclude yozilsa faqat _id ni tashlab qolganini olib beradi
 }
+//bu yerda pick UserDocumentdan faqat _id ni olib beradi;
+//pickni orniga Exclude yozilsa faqat _id ni tashlab qolganini olib beradi
