@@ -13,7 +13,7 @@ export class UserService {
   async byId(id: string) {
     const user = await this.userModel.findById(id);
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException('User_not_found');
 
     return user;
   }
@@ -22,7 +22,7 @@ export class UserService {
     const { email, password } = dto;
 
     const existUser = await this.userModel.findOne({ email });
-    if (!existUser) throw new UnauthorizedException('User not found');
+    if (!existUser) throw new UnauthorizedException('user_not_found');
 
     const salt = await genSalt(10);
     const hashPassword = await hash(password, salt);
