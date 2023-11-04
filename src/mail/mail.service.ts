@@ -7,10 +7,10 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import * as SendGrid from '@sendgrid/mail';
-import { compare, genSalt, hash } from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/user.model';
-import { Otp, OtpDocument } from './otp.model';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
+import { Otp, OtpDocument } from './schemas/otp.schema';
 
 @Injectable()
 export class MailService {
@@ -30,14 +30,16 @@ export class MailService {
       if (!existUser) throw new UnauthorizedException('user_not_found');
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const salt = await genSalt(10);
-    const hashedOtp = await hash(String(otp), salt);
+    const otp = Math.floor(100000 + Math.random() * 900000); //6 digits
+    // const salt = await genSalt(10);
+    // const hashedOtp = await hash(String(otp), salt);
+    const hashedOtp = await bcrypt.hash(String(otp), 7);
     const emailData = {
       to: email,
       subject: 'Verification email',
       //from: 'jamshid.makh94@gmail.com',
-      from: 'studentsmernbootcamp@gmail.com',
+      // from: 'studentsmernbootcamp@gmail.com',
+      from: 'james@dataprotec.co.kr',
       html: `
         <h1> Action Required: One-Time Verification Code </h1>
       <h2>	You are receiving this email because a request was made for a one-time code that can be used for authentication. </h2>
@@ -47,7 +49,7 @@ export class MailService {
     
       `,
     };
-    await this.otpModel.create({ email: email, otp: hashedOtp, expireAt: Date.now() + 3600000 });
+    await this.otpModel.create({ email: email, otp: hashedOtp, expireAt: Date.now() + 3600000 }); //one hour
     await SendGrid.send(emailData);
     return 'Success';
   }
@@ -63,7 +65,8 @@ export class MailService {
       throw new BadRequestException('expired_code');
     }
 
-    const validOtp = await compare(otpVerification, otp);
+    // const validOtp = await compare(otpVerification, otp);
+    const validOtp = await bcrypt.compare(otpVerification, otp);
     if (!validOtp) throw new BadRequestException('otp_is_incorrect');
 
     await this.otpModel.deleteMany({ email });

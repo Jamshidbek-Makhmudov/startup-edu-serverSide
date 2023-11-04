@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
-import { compare, genSalt, hash } from 'bcryptjs';
+// import { compare, genSalt, hash } from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/user.model';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { LoginAuthDto } from './dto/login.dto';
 import { TokenDto } from './dto/token.dto';
 
@@ -18,8 +19,9 @@ export class AuthService {
     const existUser = await this.isExistUser(dto.email);
     if (existUser) throw new BadRequestException('already_exist');
 
-    const salt = await genSalt(10);
-    const passwordHash = await hash(dto.password, salt);
+    // const salt = await genSalt(10);
+    // const passwordHash = await hash(dto.password, salt);
+    const passwordHash = await bcrypt.hash(dto.password, 7);
 
     const newUser = await this.userModel.create({
       ...dto,
@@ -35,7 +37,8 @@ export class AuthService {
     const existUser = await this.isExistUser(dto.email);
     if (!existUser) throw new BadRequestException('user_not_found');
     if (dto.password.length) {
-      const currentPassword = await compare(dto.password, existUser.password);
+      // const currentPassword = await compare(dto.password, existUser.password);
+      const currentPassword = await bcrypt.compare(dto.password, existUser.password);
       if (!currentPassword) throw new BadRequestException('incorrect_password');
     }
 

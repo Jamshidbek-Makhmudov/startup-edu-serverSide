@@ -1,5 +1,5 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
-import { RoleUser } from '../dto/user.dto';
+import { RoleUser } from '../../dto/user.dto';
 import { OnlyAdminGuard } from '../guards/admin.guard';
 import { OnlyInstructorGuard } from '../guards/instructor.guard';
 import { JwtAuthGuard } from '../guards/jwt.guard';
