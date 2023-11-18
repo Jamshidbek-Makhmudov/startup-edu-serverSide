@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
-import { RoleUser } from 'src/auth/dto/user.dto';
+import { RoleUser } from '../dto/user.dto';
+
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -22,6 +23,9 @@ export class User {
   @ApiProperty({ example: 'Admin', description: "user's role" })
   @Prop()
   role: RoleUser;
+  @ApiProperty({ example: 'image', description: "user's image avatar" })
+   @Prop()
+  avatar: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

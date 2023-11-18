@@ -58,12 +58,29 @@ export class MailService {
     if (!otpVerification) throw new BadRequestException('send_otp_verification');
 
     const userExistOtp = await this.otpModel.find({ email });
-    const { expireAt, otp } = userExistOtp.slice(-1)[0];
+    // from here
+    if (userExistOtp.length === 0) {
+      throw new BadRequestException('no_otp_found_for_email');
+    }
+
+    const latestOtp = userExistOtp[userExistOtp.length - 1];
+    if (!latestOtp || !('expireAt' in latestOtp) || !('otp' in latestOtp)) {
+      throw new BadRequestException('otp_data_missing');
+    }
+
+    const { expireAt, otp } = latestOtp;
 
     if (expireAt < new Date()) {
       await this.otpModel.deleteMany({ email });
       throw new BadRequestException('expired_code');
     }
+
+    // const { expireAt, otp } = userExistOtp.slice(-1)[0];
+
+    // if (expireAt < new Date()) {
+    //   await this.otpModel.deleteMany({ email });
+    //   throw new BadRequestException('expired_code');
+    // }
 
     // const validOtp = await compare(otpVerification, otp);
     const validOtp = await bcrypt.compare(otpVerification, otp);

@@ -5,7 +5,11 @@ export class RegisterAuthDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
+  @IsString()
+  @MinLength(6)
+  @IsNotEmpty()
   password: string;
+    @IsString()
+  @IsNotEmpty()
   fullName: string;
 }
