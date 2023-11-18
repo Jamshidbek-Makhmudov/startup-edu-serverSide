@@ -3,9 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 // import { genSalt, hash, } from 'bcryptjs';
 import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
-import { InterfaceEmailAndPassword } from 'src/auth/dto/user.dto';
+
 
 import { User, UserDocument } from './schemas/user.schema';
+import { InterfaceEmailAndPassword } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
