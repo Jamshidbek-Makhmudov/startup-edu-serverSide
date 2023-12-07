@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/common/decorators/auth.decorator';
 import { User } from '../user/decorators/user.decorator';
@@ -22,7 +22,7 @@ export class CourseController {
   @ApiOperation({ summary: 'create course for Instructors' })
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
-  @Post('edit/:courseId')
+  @Patch('edit/:courseId')
   @Auth('INSTRUCTOR')
   async editCourse(@Body() dto: CourseBodyDto, @Param('courseId') courseId: string) {
     return this.courseService.editCourse(dto, courseId);
