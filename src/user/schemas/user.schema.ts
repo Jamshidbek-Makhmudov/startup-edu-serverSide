@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument,Schema as SchemaMS } from 'mongoose';
 import { RoleUser } from '../dto/user.dto';
+import { Course } from '../../course/schemas/course.schema';
+
 
 
 export type UserDocument = HydratedDocument<User>;
@@ -26,6 +28,33 @@ export class User {
   @ApiProperty({ example: 'image', description: "user's image avatar" })
    @Prop()
   avatar: string;
+
+  @ApiProperty({ example: 'student', description: "user's job" })
+  @Prop()
+  job: string;
+  @ApiProperty({ example: 'customer id', description: "user's customer id " })  
+  @Prop()
+  customerId: string;
+
+  @ApiProperty({ example: 'instructorAccountId', description: "user's instructorAccountId " })
+  @Prop()
+  instructorAccountId: string;
+  
+  @ApiProperty({ example: 'createdAt', description: "user's createdAt " })
+  @Prop()
+  createdAt: string;
+  
+  @ApiProperty({ example: 'bio', description: "user's bio " })
+  @Prop()
+  bio: string;
+  
+  @ApiProperty({ example: 'birthday', description: "user's birthday " })
+  @Prop()
+  birthday: string;
+  
+  @ApiProperty({ example: 'courses', description: "user's courses " })
+  @Prop([{ type: SchemaMS.Types.ObjectId, ref: 'Course' }])
+  courses: Course[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
