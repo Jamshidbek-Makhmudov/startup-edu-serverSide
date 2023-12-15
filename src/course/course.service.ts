@@ -13,6 +13,7 @@ export class CourseService {
   ) {}
 
   async createCourse(dto: CourseBodyDto, id: string) {
+    //changes params from "Hello World!" to this => hello-world for more beauty of query params appear
     const slugify = (str: string) =>
       str
         .toLowerCase()
