@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from 'src/auth/common/decorators/auth.decorator';
 
+import { Auth } from '../auth/common/decorators/auth.decorator';
 import { User } from './decorators/user.decorator';
 import { InterfaceEmailAndPassword } from './dto/user.dto';
 import { UserService } from './user.service';
