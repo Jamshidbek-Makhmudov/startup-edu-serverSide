@@ -42,7 +42,27 @@ export class InstructorService {
   }
 
   /**get detailed courses */
-  async getDetailedCourses(slug: string) {
+  async getDetailedCourse(slug: string) {
     return await this.courseModel.findOne({ slug });
+  }
+
+  /**get all instructors */
+  async getInstructors(language: string, limit: string) {
+    const instructors = await this.instructorModel
+      .find({ language, approved: true })
+      .populate('author')
+      .limit(Number(limit))
+      .sort({ createdAt: -1 })
+      .exec();
+    return instructors.map(instructor => this.getSpecificFieldInstructor(instructor));
+  }
+
+  getSpecificFieldInstructor(instructor: InstructorDocument) {
+    return {
+      avatar: instructor.author.avatar,
+      fullName: instructor.author.fullName,
+      totalCourses: instructor.courses.length,
+      job: instructor.author.job,
+    };
   }
 }
