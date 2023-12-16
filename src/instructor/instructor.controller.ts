@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/common/decorators/auth.decorator';
 import { User } from '../user/decorators/user.decorator';
@@ -35,9 +35,16 @@ export class InstructorController {
   @HttpCode(200)
   @Get('course/:slug')
   @Auth('INSTRUCTOR')
-  async getDetailedCourses(@Param('slug') slug: string) {
+  async getDetailedCourse(@Param('slug') slug: string) {
     console.log(slug);
-    return this.instructorService.getDetailedCourses(slug);
-    
+    return this.instructorService.getDetailedCourse(slug);
+  }
+  /**get all instructors */
+  @ApiOperation({ summary: 'get all instrucotrs' })
+  @ApiResponse({ status: 200, type: Promise<String> })
+  @HttpCode(200)
+  @Get('all')
+  async getInstructors(@Query('language') language: string, @Query('limit') limit: string) {
+    return this.instructorService.getInstructors(language, limit);
   }
 }
