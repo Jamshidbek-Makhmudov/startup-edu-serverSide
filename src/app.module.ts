@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { InstructorModule } from './instructor/instructor.module';
 import { FileModule } from './file/file.module';
 import { SectionModule } from './section/section.module';
+import { ReviewModule } from './review/review.module';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { SectionModule } from './section/section.module';
     InstructorModule,
     FileModule,
     SectionModule,
+    ReviewModule,
+    LessonModule,
   ],
 })
 export class AppModule {}
