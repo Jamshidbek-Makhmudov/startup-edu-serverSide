@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Instructor, InstructorDocument } from '../instructor/schemas/instructor.schema';
-import { CourseBodyDto } from './dto/course.dto';
-import { Course, CourseDocument } from './schemas/course.schema';
+import { CourseBodyDto } from 'src/course/dto/course.dto';
+import { Course, CourseDocument } from 'src/course/schemas/course.schema';
+import { Instructor, InstructorDocument } from 'src/instructor/schemas/instructor.schema';
+import { Review, ReviewDocument } from 'src/review/schemas/review.schema';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class CourseService {
   constructor(
     @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
     @InjectModel(Instructor.name) private instructorModel: Model<InstructorDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Review.name) private reviewModel: Model<ReviewDocument>,
   ) {}
 
   async createCourse(dto: CourseBodyDto, id: string) {
@@ -69,12 +73,14 @@ export class CourseService {
     return course;
   }
 
-  // async dragCourseSections(courseId: string, sections: string[]) {
-  //   const course = await this.courseModel.findByIdAndUpdate(courseId,
-  //     { $set: { sections } },
-  //     { new: true })
-  //   return course.sections
-  //  }
+  async dragCourseSections(courseId: string, sections: string[]) {
+    const course = await this.courseModel.findByIdAndUpdate(
+      courseId,
+      { $set: { sections } },
+      { new: true },
+    );
+    return course.sections;
+  }
 
   async getCourses(language: string, limit: string) {
     const courses = (await this.courseModel
@@ -226,13 +232,47 @@ export class CourseService {
     return totalHour.toFixed(1);
   }
 
-  // async getAdminCourses() {
-  //   return this.courseModel.find().exec();
-  // }
+  /**get detailed courses */
 
-  // async enrollUser(userID: string, courseId: string) {
-  //   await this.userModel.findByIdAndUpdate(userID, { $push: { courses: courseId } }, { new: true });
+  async getDetailedCourse(slug: string) {
+    const course = (await this.courseModel
+      .findOne({ slug })
+      .populate({ path: 'sections', populate: { path: 'lessons' } })
+      .populate('author')
+      .exec()) as CourseDocument & { reviewCount: number; reviewAvg: number };
 
-  //   return 'Success';
-  // }
+    const reviews = await this.reviewModel.find({ course: course._id });
+    const avarage = this.getReviewAvarage(reviews.map(c => c.rating));
+    const allStudents = await this.userModel.find({ courses: course._id });
+
+    return {
+      ...this.getSpecificFieldCourse(course),
+      reviewCount: reviews.length,
+      reviewAvg: avarage,
+      allStudents: allStudents.length,
+    };
+  }
+  getReviewAvarage(ratingArr: number[]) {
+    let rating: number | undefined;
+    if (ratingArr.length == 1) {
+      rating = ratingArr[0];
+    }
+    if (ratingArr.length == 0) {
+      rating = 5;
+    }
+    if (ratingArr.length > 1) {
+      rating = (ratingArr.reduce((prev, next) => prev + next) * 5) / (ratingArr.length * 5);
+    }
+    return rating;
+  }
+
+  async getAdminCourses() {
+    return this.courseModel.find().exec();
+  }
+
+  async enrollUser(userID: string, courseId: string) {
+    await this.userModel.findByIdAndUpdate(userID, { $push: { courses: courseId } }, { new: true });
+
+    return 'Success';
+  }
 }
