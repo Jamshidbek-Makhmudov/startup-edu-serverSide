@@ -211,23 +211,23 @@ export class CourseService {
   getTotalHours(course: CourseDocument) {
     let totalHour = 0;
 
-    // for (let s = 0; s < course.sections.length; s++) {
-    //   const section = course.sections[s];
-    //   let sectionHour = 0;
+    for (let s = 0; s < course.sections.length; s++) {
+      const section = course.sections[s];
+      let sectionHour = 0;
 
-    //   for (let l = 0; l < section.lessons.length; l++) {
-    //     const lesson = section.lessons[l];
-    //     const hours = parseInt(String(lesson.hour));
-    //     const seconds = parseInt(String(lesson.second));
-    //     const minutes = parseInt(String(lesson.minute));
-    //     const totalMinutes = hours * 60 + minutes;
-    //     const totalSeconds = totalMinutes * 60 + seconds;
-    //     const totalHourLesson = totalSeconds / 3600;
-    //     sectionHour += totalHourLesson;
-    //   }
+      for (let l = 0; l < section.lessons.length; l++) {
+        const lesson = section.lessons[l];
+        const hours = parseInt(String(lesson.hour));
+        const seconds = parseInt(String(lesson.second));
+        const minutes = parseInt(String(lesson.minute));
+        const totalMinutes = hours * 60 + minutes;
+        const totalSeconds = totalMinutes * 60 + seconds;
+        const totalHourLesson = totalSeconds / 3600;
+        sectionHour += totalHourLesson;
+      }
 
-    //   totalHour += sectionHour;
-    // }
+      totalHour += sectionHour;
+    }
 
     return totalHour.toFixed(1);
   }
