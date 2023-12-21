@@ -58,11 +58,11 @@ export class LessonService {
   }
 
   /**complate lessons */
-  async completeLesson(userID: string, lessonId: string) {
+  async completeLesson(userId: string, lessonId: string) {
     const lesson = await this.lessonModel.findByIdAndUpdate(
       lessonId,
       {
-        $push: { completed: userID },
+        $push: { completed: userId },
       },
       { new: true },
     );

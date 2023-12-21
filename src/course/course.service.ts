@@ -78,7 +78,7 @@ export class CourseService {
       courseId,
       { $set: { sections } },
       { new: true },
-    );
+    ).populate({ path: 'sections', populate: { path: 'lessons' } });
     return course.sections;
   }
 
