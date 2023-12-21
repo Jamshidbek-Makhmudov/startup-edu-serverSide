@@ -6,12 +6,13 @@ import { Model } from 'mongoose';
 
 
 import { User, UserDocument } from './schemas/user.schema';
-import { InterfaceEmailAndPassword } from './dto/user.dto';
+import { InterfaceEmailAndPassword, UpdateUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  /**find user by id */
   async byId(id: string) {
     const user = await this.userModel.findById(id);
 
@@ -20,6 +21,7 @@ export class UserService {
     return user;
   }
 
+  /**user edit password */
   async editPassword(dto: InterfaceEmailAndPassword) {
     const { email, password } = dto;
 
@@ -38,4 +40,19 @@ export class UserService {
 
     return 'Success';
   }
+
+  /**user update password */
+  async updateUser(body: UpdateUserDto, userId: string) {
+    const { avatar, firstName, lastName, bio, birthday, job } = body
+    
+    const user = await this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {fullName:`${firstName} ${lastName}`, avatar, bio, birthday, job}
+      },
+      {new:true}
+    )
+
+    return user;
+   }
 }
