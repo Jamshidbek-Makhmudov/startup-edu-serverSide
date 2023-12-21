@@ -25,7 +25,7 @@ export class AdminService {
   }
 
   /**aprove instructor */
-  async aproveInstructor(instructorId: string) {
+  async approveInstructor(instructorId: string) {
     const instructor = await this.instructorModel.findByIdAndUpdate(
     instructorId,
     {
