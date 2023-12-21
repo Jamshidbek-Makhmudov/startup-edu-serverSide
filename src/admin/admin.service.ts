@@ -24,6 +24,79 @@ export class AdminService {
     return instructors.map(instructor=>this.getSpecifiField(instructor))
   }
 
+  /**aprove instructor */
+  async aproveInstructor(instructorId: string) {
+    const instructor = await this.instructorModel.findByIdAndUpdate(
+    instructorId,
+    {
+      $set: {approved:true}
+      }, { new: true })
+    
+    //**needs to add payment methods here ... */
+    //**needs to add payment methods here ... */
+    //**needs to add payment methods here ... */
+    //**needs to add payment methods here ... */
+
+  }
+  
+  /**delete instructor */
+  async deleteInstructor(instructorId: string) {
+    const instructor = await this.instructorModel.findByIdAndUpdate(
+      instructorId,
+      {
+        $set: {approved: false}
+      },
+      {new:true }
+    )
+
+    await this.userModel.findByIdAndUpdate(
+      instructor.author,
+      { $set: { role: "USER" } },
+      {new:true}
+    )
+
+    return 'Success'
+
+
+  }
+  
+  /**get all users */
+  async getAllUsers(limit: number) {
+    const users = await this.userModel.find().limit(limit).sort({ createdAt: -1 }).exec()
+    
+    return users.map(user=>this.getUserSpecifiField(user))
+  }
+  
+  /**search user */
+  async searchUser(email: string, limit: number) {
+    let users: UserDocument[]
+    if (email) {
+      users = await this.userModel.find({}).exec();
+    } else { 
+      users = await this.userModel.find({}).limit(limit).exec();
+    }
+    const searchedUser=users.filter(user=>user.email.toLowerCase().indexOf(email.toLowerCase()) !== -1)
+  
+    return searchedUser.map(user=>this.getUserSpecifiField(user))
+  }
+  /**delete course */
+  async deleteCourse(courseId: string) {
+    const courseAuthor = await this.courseModel.findById(courseId)
+    await this.instructorModel.findByIdAndUpdate(
+      { author: courseAuthor.author },
+      { $pull: { courses: courseId } },
+      {new:true}
+    )
+
+    await this.courseModel.findByIdAndRemove(courseId, { new: true }).exec()
+    const courses = await this.courseModel.find().exec()
+    
+    return courses.map(course=>this.getSpecificFieldCourse(course))
+   }
+  
+
+
+
   /**get fileds */
   getSpecifiField(instructor: InstructorDocument) {
     return {
