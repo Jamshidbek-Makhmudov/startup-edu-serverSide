@@ -36,7 +36,6 @@ export class InstructorController {
   @Get('course/:slug')
   @Auth('INSTRUCTOR')
   async getDetailedCourse(@Param('slug') slug: string) {
-    console.log(slug);
     return this.instructorService.getDetailedCourse(slug);
   }
   /**get all instructors */

@@ -195,6 +195,7 @@ export class CourseService {
         avatar: course.author.avatar,
         job: course.author.job,
       },
+      /** lesson.map=> [4,5,5...]  .reduce=> overAll */
       lessonCount: course.sections.map(c => c.lessons.length).reduce((a, b) => +a + +b, 0),
       totalHour: this.getTotalHours(course),
       updatedAt: course.updatedAt,

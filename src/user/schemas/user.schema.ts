@@ -23,7 +23,7 @@ export class User {
   password: string;
 
   @ApiProperty({ example: 'Admin', description: "user's role" })
-  @Prop()
+  @Prop({ default: "USER" })
   role: RoleUser;
   @ApiProperty({ example: 'image', description: "user's image avatar" })
    @Prop()

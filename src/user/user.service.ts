@@ -54,5 +54,15 @@ export class UserService {
     )
 
     return user;
+  }
+  /**
+   * Transactional method need to add
+   */
+  
+  /**my courses */
+  async myCourses(userId: string) {
+    const user = await this.userModel.findById(userId).populate('courses').exec()
+
+    return user.courses
    }
 }

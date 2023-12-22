@@ -1,8 +1,10 @@
-import { Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login.dto';
 import { TokenDto } from './dto/token.dto';
+import { User } from '../user/decorators/user.decorator';
+import { Auth } from './common/decorators/auth.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -10,7 +12,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register' })
-  @ApiResponse({ status: 201, type: Promise<LoginAuthDto> })
+  @ApiResponse({ status: 200, type: Promise<LoginAuthDto> })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('register')
@@ -19,7 +21,7 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Login' })
-  @ApiResponse({ status: 201, type: Promise<LoginAuthDto> })
+  @ApiResponse({ status: 200, type: Promise<LoginAuthDto> })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login')
@@ -28,7 +30,7 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Access' })
-  @ApiResponse({ status: 201, type: Promise<TokenDto> })
+  @ApiResponse({ status: 200, type: Promise<TokenDto> })
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('access')
@@ -37,10 +39,19 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Check user' })
-  @ApiResponse({ status: 201, type: Promise<String> })
+  @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Post('check-user')
   async checkUser(@Body() dto: { email: string }) {
     return this.authService.checkUser(dto.email);
+  }
+  /**check intructor */
+  @ApiOperation({ summary: 'Check instructor' })
+  @ApiResponse({ status: 200, type: Promise<String> })
+  @HttpCode(200)
+  @Get('check-instructor')
+  @Auth("INSTRUCTOR")
+  async checkInstructor(@User('_id') _id: string) {
+    return _id ? true : false;
   }
 }

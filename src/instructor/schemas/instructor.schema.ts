@@ -20,7 +20,7 @@ export class Instructor {
 	@Prop({ default: false })
 	approved: boolean
 		@ApiProperty({ example: 'language', description: "instructor language" })
-	  @Prop()
+	  @Prop({ default: 'en' })
   language: string;
 
   @Prop([{ type: SchemaMS.Types.ObjectId, ref: 'Course' }])

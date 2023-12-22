@@ -8,14 +8,14 @@ export class MailController {
   constructor(private readonly mailService: MailService) {}
 
   @ApiOperation({ summary: 'Send otp' })
-  @ApiResponse({ status: 201, type: Promise<Boolean> })
+  @ApiResponse({ status: 200, type: Promise<Boolean> })
   @HttpCode(200)
   @Post('send-otp')
   async sendOtp(@Body() dto: { email: string; isUser: boolean }) {
     return this.mailService.sendOtpVerification(dto.email, dto.isUser);
   }
   @ApiOperation({ summary: 'Verify otp' })
-  @ApiResponse({ status: 201, type: Promise<String> })
+  @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Post('verify-otp')
   async verifyOtp(@Body() dto: { email: string; otpVerification: string }) {
