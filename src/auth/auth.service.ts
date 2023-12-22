@@ -27,7 +27,10 @@ export class AuthService {
       ...dto,
       password: dto.password.length ? passwordHash : '',
     });
-
+        /**
+         * custom service need to add 
+         * 
+         * */
     const token = await this.issueTokenPair(String(newUser._id));
 
     return { user: this.getUserField(newUser), ...token };
@@ -41,6 +44,10 @@ export class AuthService {
       const currentPassword = await bcrypt.compare(dto.password, existUser.password);
       if (!currentPassword) throw new BadRequestException('incorrect_password');
     }
+            /**
+         * custom service need to add 
+         * 
+         * */
 
     const token = await this.issueTokenPair(String(existUser._id));
     return { user: this.getUserField(existUser), ...token };
@@ -90,6 +97,12 @@ export class AuthService {
       email: user.email,
       fullName: user.fullName,
       avatar: user.avatar,
+      role: user.role,
+      courses: user.courses,
+      createdAt: user.createdAt,
+      birthday: user.birthday,
+      bio: user.bio,
+      job: user.job,
     };
   }
 }

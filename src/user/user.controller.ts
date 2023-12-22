@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**find user by id */
   @ApiOperation({ summary: "get user's datas" })
   @ApiResponse({ status: 200, type: Promise<String> })
   @Get('profile')
@@ -19,6 +20,7 @@ export class UserController {
     return this.userService.byId(_id);
   }
 
+  /**edit user's password */
   @ApiOperation({ summary: 'change password' })
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
@@ -26,4 +28,13 @@ export class UserController {
   async editPassword(@Body() dto: InterfaceEmailAndPassword) {
     return this.userService.editPassword(dto);
   }
+
+  // /**update user  */
+  // @ApiOperation({ summary: 'change password' })
+  // @ApiResponse({ status: 200, type: Promise<String> })
+  // @HttpCode(200)
+  // @Put('edit-password')
+  // async editPassword(@Body() dto: InterfaceEmailAndPassword) {
+  //   return this.userService.editPassword(dto);
+  // }
 }
