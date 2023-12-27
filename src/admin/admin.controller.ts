@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from '../auth/common/decorators/auth.decorator';
-import { AdminService } from './admin.service';
-import { ApproveInstructorDto } from './dto/admin.dto';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { AdminService } from 'src/admin/admin.service';
+import { ApproveInstructorDto } from 'src/admin/dto/admin.dto';
 
 @ApiTags('Admin')
 @Controller('admin')

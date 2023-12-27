@@ -5,6 +5,9 @@ import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { Course, CourseDocument } from 'src/course/schemas/course.schema';
 import { Model } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
+import Stripe from 'stripe';
+import { InjectStripe } from 'nestjs-stripe';
+import * as SendGrid from '@sendgrid/mail'
 
 
 @Injectable()
@@ -13,9 +16,11 @@ export class AdminService {
     @InjectModel(Instructor.name) private instructorModel: Model<InstructorDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
+    @InjectStripe() private readonly stripeClient: Stripe,
     private readonly configService: ConfigService,
-  ) {}
-
+    ) {
+      SendGrid.setApiKey(this.configService.get<string>('SEND_GRID_KEY'))
+  }
 
   /**get all instructors */
   async getAllInstructors() {
@@ -32,11 +37,39 @@ export class AdminService {
       $set: {approved:true}
       }, { new: true })
     
-    //**needs to add payment methods here ... */
-    //**needs to add payment methods here ... */
-    //**needs to add payment methods here ... */
-    //**needs to add payment methods here ... */
+    const user = await this.userModel.findById(instructor.author)
+    
+    const account = await this.stripeClient.accounts.create({
+      type: "express",
+      country: 'US',
+      email: user.email,
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: {requested: true}
+      }
+    })
 
+    const accountLinks = await this.stripeClient.accountLinks.create({
+      account: account.id,
+      refresh_url:this.configService.get<string>('CLIENT_DEV'),
+      return_url: this.configService.get<string>('CLIENT_DEV'),
+      type:'account_onboarding'
+    })
+
+    await this.userModel.findByIdAndUpdate(instructor.author,
+      { $set: { role: "INSTRUCTOR", instructorAccountId: account.id } },
+      { new: true })
+    
+    const emailData = {
+      to: user.email,
+      subject: "successfully approved",
+      from: "james@dataprotec.co.kr",
+      html:`<p>Hi dear ${user.fullName}, you are approved in our platform as an Instructor, follow the bellow steps.</p>
+				<a href="${accountLinks.url}">Full finish your instructor account</a>`
+    }
+
+    await SendGrid.send(emailData)
+    return "Success"
   }
   
   /**delete instructor */
