@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/user/schemas/user.schema';
-import { MailController } from './mail.controller';
-import { MailService } from './mail.service';
-import { Otp, OtpSchema } from './schemas/otp.schema';
+import { MailController } from 'src/mail/mail.controller';
+import { MailService } from 'src/mail/mail.service';
+import { Otp, OtpSchema } from 'src/mail/schemas/otp.schema';
+import { Book, BookSchema } from 'src/books/schemas/book.schema';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { Otp, OtpSchema } from './schemas/otp.schema';
     MongooseModule.forFeature([
       { name: Otp.name, schema: OtpSchema },
       { name: User.name, schema: UserSchema },
+      { name: Book.name, schema: BookSchema },
     ]),
   ],
   controllers: [MailController],

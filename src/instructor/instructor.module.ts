@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { InstructorService } from './instructor.service';
-import { InstructorController } from './instructor.controller';
+import { InstructorService } from 'src/instructor/instructor.service';
+import { InstructorController } from 'src/instructor/instructor.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../user/schemas/user.schema';
+import { User, UserSchema } from 'src/user/schemas/user.schema';
 import { Instructor, InstructorSchema } from './schemas/instructor.schema';
-import { Course, CourseSchema } from '../course/schemas/course.schema';
+import { Course, CourseSchema } from 'src/course/schemas/course.schema';
 
 @Module({
   imports: [

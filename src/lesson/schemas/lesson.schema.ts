@@ -19,19 +19,19 @@ export class Lesson {
 
   @ApiProperty({ example: 'hour', description: 'hour' })
   @Prop()
-  hour: string;
+  hour: number;
 
   @ApiProperty({ example: 'minute', description: 'minute' })
   @Prop()
-  minute: string;
+  minute: number;
 
   @ApiProperty({ example: 'second', description: 'second' })
   @Prop()
-  second: string;
+  second: number;
 
   @ApiProperty({ example: 'completed', description: 'completed' })
-  @Prop()
-  completed: string;
+  @Prop([String])
+  completed: string[];
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

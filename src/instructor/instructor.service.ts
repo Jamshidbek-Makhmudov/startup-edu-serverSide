@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Course, CourseDocument } from '../course/schemas/course.schema';
-import { User, UserDocument } from '../user/schemas/user.schema';
-import { InstructorApplyDto } from './dto/instructor.dto';
-import { Instructor, InstructorDocument } from './schemas/instructor.schema';
+import { Course, CourseDocument } from 'src/course/schemas/course.schema';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
+import { InstructorApplyDto } from 'src/instructor/dto/instructor.dto';
+import { Instructor, InstructorDocument } from 'src/instructor/schemas/instructor.schema';
 
 @Injectable()
 export class InstructorService {
@@ -39,9 +39,9 @@ export class InstructorService {
     if (existInstructor)
       throw new BadRequestException('Instructor with that email already exist in our system');
 
-    const newInstructor = await this.instructorModel.create(data);
+     await this.instructorModel.create(data);
 
-    return newInstructor;
+    return "Success"
   }
 
   /**get all courses */

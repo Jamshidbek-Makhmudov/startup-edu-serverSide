@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument, Schema as SchemaMS } from 'mongoose';
-import { Section } from '../../section/schemas/section.schema';
-import { User } from '../../user/schemas/user.schema';
+import { Section } from 'src/section/schemas/section.schema';
+import { User } from 'src/user/schemas/user.schema';
 
 export type CourseDocument = HydratedDocument<Course>;
 @Schema({ timestamps: true })

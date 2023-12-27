@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import {HydratedDocument,Schema as SchemaMS } from "mongoose"
-import { User } from "../../user/schemas/user.schema";
+import { User } from "src/user/schemas/user.schema";
 import { ApiProperty } from "@nestjs/swagger";
-import { Course } from "../../course/schemas/course.schema";
+import { Course } from "src/course/schemas/course.schema";
 
 export type InstructorDocument = HydratedDocument<Instructor>
 

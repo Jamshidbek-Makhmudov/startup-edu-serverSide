@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FileResponseDto } from './dto/file-response';
+import { FileResponseDto } from 'src/file/dto/file-response';
 import { path } from 'app-root-path';
 import { ensureDir, writeFile} from "fs-extra"
 

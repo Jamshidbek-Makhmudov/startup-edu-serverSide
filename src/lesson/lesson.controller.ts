@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from '../auth/common/decorators/auth.decorator';
-import { User } from '../user/decorators/user.decorator';
-import { CreateLessonDto } from './dto/create-lesson.dto';
-import { LessonService } from './lesson.service';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { User } from 'src/user/decorators/user.decorator';
+import { CreateLessonDto } from 'src/lesson/dto/create-lesson.dto';
+import { LessonService } from 'src/lesson/lesson.service';
 
 @ApiTags('Lesson')
 @Controller('lesson')
