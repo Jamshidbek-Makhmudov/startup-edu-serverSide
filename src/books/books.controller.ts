@@ -24,7 +24,6 @@ export class BooksController {
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Get('find-all')
-  @Auth('ADMIN')
   findAll() {
     return this.booksService.findAll();
   }

@@ -13,6 +13,8 @@ import { ReviewModule } from './review/review.module';
 import { LessonModule } from './lesson/lesson.module';
 import { AdminModule } from './admin/admin.module';
 import { BooksModule } from './books/books.module';
+import { StripePaymentModule } from './payment/stripe-payment/stripe-payment.module';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { BooksModule } from './books/books.module';
     LessonModule,
     AdminModule,
     BooksModule,
+    StripePaymentModule,
+    CustomerModule,
   ],
 })
 export class AppModule {}
