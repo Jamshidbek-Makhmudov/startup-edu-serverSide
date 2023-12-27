@@ -10,13 +10,15 @@ import * as SendGrid from '@sendgrid/mail';
 import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/user/schemas/user.schema';
-import { Otp, OtpDocument } from './schemas/otp.schema';
+import { Otp, OtpDocument } from 'src/mail/schemas/otp.schema';
+import { Book, BooksDocument } from 'src/books/schemas/book.schema';
 
 @Injectable()
 export class MailService {
   constructor(
     @InjectModel(Otp.name) private otpModel: Model<OtpDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectModel(Book.name) private booksModel: Model<BooksDocument>,
     private readonly configService: ConfigService,
   ) {
     SendGrid.setApiKey(this.configService.get<string>('SEND_GRID_KEY'));
@@ -89,4 +91,20 @@ export class MailService {
     await this.otpModel.deleteMany({ email });
     return 'Success';
   }
+
+  /**receive books */
+  async receiveBooks(bookId: string, userId: string) {
+    const user = await this.userModel.findById(userId)
+    const book = await this.booksModel.findById(bookId)
+    
+    const emailData = {
+      to: user.email,
+      subject: 'Ordered Book',
+      from: 'james@dataprotec.co.kr',
+      html:`<a href="${book.pdf}">Your ordered book - ${book.title}</a>`  
+    }
+
+    await SendGrid.send(emailData)
+    return "Success"
+   }
 }

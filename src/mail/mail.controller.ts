@@ -1,8 +1,10 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MailService } from 'src/mail/mail.service';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { User } from 'src/user/decorators/user.decorator';
 
-@ApiTags('mail')
+@ApiTags('Mail')
 @Controller('mail')
 export class MailController {
   constructor(private readonly mailService: MailService) {}
@@ -21,4 +23,15 @@ export class MailController {
   async verifyOtp(@Body() dto: { email: string; otpVerification: string }) {
     return this.mailService.verifyOtp(dto.email, dto.otpVerification);
   }
+
+  /**receive book mail */
+  @ApiOperation({ summary: 'receive books' })
+  @ApiResponse({ status: 200, type: Promise<String> })
+  @HttpCode(200)
+  @Post('books/:bookdId')
+  @Auth("USER")
+  async receiveBooks(@Param('bookId') bookId: string, @User("_id") _id:string) {
+    return this.mailService.receiveBooks(bookId,_id);
+  }
+
 }
