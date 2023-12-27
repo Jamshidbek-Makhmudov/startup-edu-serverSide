@@ -5,8 +5,8 @@ import { Course, CourseDocument } from 'src/course/schemas/course.schema';
 import { Model } from 'mongoose';
 import { CustomerService } from 'src/customer/customer.service';
 import Stripe from 'stripe';
-import { BooksStripePaymentDto } from './dto/books-stripe-payment.dto';
-import { CourseStripePaymentDto } from './dto/course-stripe-payment.dto';
+import { BooksStripePaymentDto } from 'src/payment/stripe-payment/dto/books-stripe-payment.dto';
+import { CourseStripePaymentDto } from 'src/payment/stripe-payment/dto/course-stripe-payment.dto';
 
 
 @Injectable()
