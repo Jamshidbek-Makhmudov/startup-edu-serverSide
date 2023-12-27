@@ -9,7 +9,7 @@ import { User } from '../user/decorators/user.decorator';
 export class CustomerController {
  constructor(private readonly customerService: CustomerService) { }
   
-  @ApiOperation({ summary: "get user's datas" })
+  @ApiOperation({ summary: "saved cards" })
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Get('saved-cards')
