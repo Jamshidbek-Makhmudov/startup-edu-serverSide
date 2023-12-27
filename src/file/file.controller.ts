@@ -1,7 +1,7 @@
 import { Controller, Post,  HttpCode, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
-import { FileService } from './file.service';
+import { FileService } from 'src/file/file.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FileResponseDto } from './dto/file-response';
+import { FileResponseDto } from 'src/file/dto/file-response';
 import {FileInterceptor } from "@nestjs/platform-express"
 
 @ApiTags("File")

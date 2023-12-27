@@ -5,14 +5,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/user/schemas/user.schema';
-import { LoginAuthDto } from './dto/login.dto';
-import { TokenDto } from './dto/token.dto';
+import { LoginAuthDto } from 'src/auth/dto/login.dto';
+import { TokenDto } from 'src/auth/dto/token.dto';
+import { CustomerService } from 'src/customer/customer.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
+    private readonly customerService: CustomerService,
   ) {}
 
   async register(dto: LoginAuthDto) {
@@ -27,10 +29,7 @@ export class AuthService {
       ...dto,
       password: dto.password.length ? passwordHash : '',
     });
-        /**
-         * custom service need to add 
-         * 
-         * */
+    await this.customerService.getCustomer(String(newUser._id))//if not creates
     const token = await this.issueTokenPair(String(newUser._id));
 
     return { user: this.getUserField(newUser), ...token };
@@ -44,11 +43,8 @@ export class AuthService {
       const currentPassword = await bcrypt.compare(dto.password, existUser.password);
       if (!currentPassword) throw new BadRequestException('incorrect_password');
     }
-            /**
-         * custom service need to add 
-         * 
-         * */
 
+    await this.customerService.getCustomer(String(existUser._id))
     const token = await this.issueTokenPair(String(existUser._id));
     return { user: this.getUserField(existUser), ...token };
   }

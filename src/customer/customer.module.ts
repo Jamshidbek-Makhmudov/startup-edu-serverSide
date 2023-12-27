@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CustomerService } from 'src/customer/customer.service';
-import { CustomerController } from './customer.controller';
+import { CustomerController } from 'src/customer/customer.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StripeModule } from 'nestjs-stripe';

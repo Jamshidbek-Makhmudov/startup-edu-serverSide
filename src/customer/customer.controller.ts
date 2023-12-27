@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Get, HttpCode } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CustomerService } from 'src/customer/customer.service';
-import { Auth } from '../auth/common/decorators/auth.decorator';
-import { User } from '../user/decorators/user.decorator';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { User } from 'src/user/decorators/user.decorator';
 
 @ApiTags('Customer')
 @Controller('customer')

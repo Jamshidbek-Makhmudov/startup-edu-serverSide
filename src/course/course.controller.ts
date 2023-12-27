@@ -11,10 +11,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from '../auth/common/decorators/auth.decorator';
-import { User } from '../user/decorators/user.decorator';
-import { CourseService } from './course.service';
-import { CourseBodyDto } from './dto/course.dto';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { User } from 'src/user/decorators/user.decorator';
+import { CourseService } from 'src/course/course.service';
+import { CourseBodyDto } from 'src/course/dto/course.dto';
 
 @ApiTags('Course')
 @Controller('course')
@@ -110,7 +110,7 @@ export class CourseController {
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Put('enroll-user/:slug')
-  @Auth() //need to check wheather i need to use guards or not!
+  @Auth() 
   async enrollUser(@User('_id') _id: string, @Param('courseId') courseId: string) {
     return this.courseService.enrollUser(_id, courseId);
   }

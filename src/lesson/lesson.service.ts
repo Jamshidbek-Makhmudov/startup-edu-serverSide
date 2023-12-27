@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Lesson } from 'src/lesson/schemas/lesson.schema';
 import { Section } from 'src/section/schemas/section.schema';
-import { CreateLessonDto } from './dto/create-lesson.dto';
+import { CreateLessonDto } from 'src/lesson/dto/create-lesson.dto';
 
 @Injectable()
 export class LessonService {
@@ -35,7 +35,7 @@ export class LessonService {
   }
   /**deleteLesson */
   async deleteLesson(sectionId: string, lessonId: string) {
-    await this.sectionModel.findByIdAndDelete(sectionId);
+    await this.lessonModel.findByIdAndRemove(sectionId);
     const section = this.sectionModel
       .findByIdAndUpdate(
         sectionId,

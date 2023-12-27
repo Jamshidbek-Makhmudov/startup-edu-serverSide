@@ -3,7 +3,7 @@ import { BooksService } from 'src/books/books.service';
 import { CreateBookDto } from 'src/books/dto/create-book.dto';
 import { UpdateBookDto } from 'src/books/dto/update-book.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from '../auth/common/decorators/auth.decorator';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
 
 @ApiTags('Books')
 @Controller('books')
@@ -30,7 +30,6 @@ export class BooksController {
   
   /**coming soon */
   @Get(':id')
-  @Auth('ADMIN')
   findOne(@Param('id') id: string) {
     return this.booksService.findOne(id);
   }
@@ -54,5 +53,3 @@ export class BooksController {
     return this.booksService.remove(id);
   }
 }
-
-/** async await ishlatish kerakmi natoj talimdan tekshirish */

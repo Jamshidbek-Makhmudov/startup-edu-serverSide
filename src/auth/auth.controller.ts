@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { LoginAuthDto } from './dto/login.dto';
-import { TokenDto } from './dto/token.dto';
-import { User } from '../user/decorators/user.decorator';
-import { Auth } from './common/decorators/auth.decorator';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginAuthDto } from 'src/auth/dto/login.dto';
+import { TokenDto } from 'src/auth/dto/token.dto';
+import { User } from 'src/user/decorators/user.decorator';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')

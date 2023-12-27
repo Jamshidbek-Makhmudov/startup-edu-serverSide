@@ -5,7 +5,7 @@ import { CourseService } from 'src/course/course.service';
 import { Course, CourseSchema } from 'src/course/schemas/course.schema';
 import { Review, ReviewSchema } from 'src/review/schemas/review.schema';
 import { User, UserSchema } from 'src/user/schemas/user.schema';
-import { Instructor, InstructorSchema } from '../instructor/schemas/instructor.schema';
+import { Instructor, InstructorSchema } from 'src/instructor/schemas/instructor.schema';
 
 @Module({
   imports: [
