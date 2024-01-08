@@ -1,9 +1,9 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
-import { User } from 'src/user/decorators/user.decorator';
 import { InstructorApplyDto } from 'src/instructor/dto/instructor.dto';
 import { InstructorService } from 'src/instructor/instructor.service';
+import { User } from 'src/user/decorators/user.decorator';
 
 @ApiTags('Instructor')
 @Controller('instructor')
@@ -16,6 +16,8 @@ export class InstructorController {
   @HttpCode(200)
   @Post('apply')
   async applyAsInstructor(@Body() dto: InstructorApplyDto) {
+    console.log(dto);
+
     return this.instructorService.applyAsInstructor(dto);
   }
 

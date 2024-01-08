@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './schemas/user.schema';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { User, UserSchema } from 'src/user/schemas/user.schema';
+import { UserController } from 'src/user/user.controller';
+import { UserService } from 'src/user/user.service';
 import { ConfigModule } from '@nestjs/config';
+import { StripeModule } from 'nestjs-stripe';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    StripeModule.forRoot({ apiKey: process.env.STRIPE_SECRET_KEY, apiVersion: '2022-11-15' }),
   ],
   providers: [UserService],
   controllers: [UserController],

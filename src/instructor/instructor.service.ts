@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Course, CourseDocument } from 'src/course/schemas/course.schema';
-import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { InstructorApplyDto } from 'src/instructor/dto/instructor.dto';
 import { Instructor, InstructorDocument } from 'src/instructor/schemas/instructor.schema';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class InstructorService {
@@ -15,7 +15,7 @@ export class InstructorService {
   ) {}
 
   async applyAsInstructor(dto: InstructorApplyDto) {
-    const { email, firstName, lastName, socialMedia,job, language } = dto;
+    const { email, firstName, lastName, socialMedia, job, language } = dto;
     let user: UserDocument;
 
     const existUser = await this.userModel.findOne({ email });
@@ -24,9 +24,10 @@ export class InstructorService {
     if (user) {
       await this.userModel.findByIdAndUpdate(
         user._id,
-        { $set: {job,FullName:`${firstName} ${lastName}`} }
-      )
-     }
+        // { $set: {job,FullName:`${firstName} ${lastName}`} }
+        { ...dto, fullName: `${firstName} ${lastName}` },
+      );
+    }
 
     if (!existUser) {
       const newUser = await this.userModel.create({ ...dto, fullName: `${firstName} ${lastName}` });
@@ -39,9 +40,9 @@ export class InstructorService {
     if (existInstructor)
       throw new BadRequestException('Instructor with that email already exist in our system');
 
-     await this.instructorModel.create(data);
+    await this.instructorModel.create(data);
 
-    return "Success"
+    return 'Success';
   }
 
   /**get all courses */

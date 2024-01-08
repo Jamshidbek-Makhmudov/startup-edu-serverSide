@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument,Schema as SchemaMS } from 'mongoose';
-import { RoleUser } from '../dto/user.dto';
-import { Course } from '../../course/schemas/course.schema';
+import { RoleUser } from 'src/user/dto/user.dto';
+import { Course } from 'src/course/schemas/course.schema';
 
 
 
