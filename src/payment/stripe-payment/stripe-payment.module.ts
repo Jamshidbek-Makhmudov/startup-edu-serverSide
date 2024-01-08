@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/user/schemas/user.schema';
 import { Course, CourseSchema } from 'src/course/schemas/course.schema';
 import { StripeModule } from 'nestjs-stripe';
+import { CustomerService } from 'src/customer/customer.service';
 
 @Module({
     imports: [
@@ -19,6 +20,6 @@ import { StripeModule } from 'nestjs-stripe';
     StripeModule.forRoot({ apiKey: process.env.STRIPE_SECRET_KEY, apiVersion: '2022-11-15' }),
   ],
   controllers: [StripePaymentController],
-  providers: [StripePaymentService]
+  providers: [StripePaymentService,CustomerService]
 })
 export class StripePaymentModule {}

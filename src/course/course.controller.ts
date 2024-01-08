@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
-import { User } from 'src/user/decorators/user.decorator';
 import { CourseService } from 'src/course/course.service';
 import { CourseBodyDto } from 'src/course/dto/course.dto';
+import { User } from 'src/user/decorators/user.decorator';
 
 @ApiTags('Course')
 @Controller('course')
@@ -109,8 +109,8 @@ export class CourseController {
   @ApiOperation({ summary: 'enroll-user' })
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
-  @Put('enroll-user/:slug')
-  @Auth() 
+  @Put('enroll-user/:courseId')
+  @Auth()
   async enrollUser(@User('_id') _id: string, @Param('courseId') courseId: string) {
     return this.courseService.enrollUser(_id, courseId);
   }

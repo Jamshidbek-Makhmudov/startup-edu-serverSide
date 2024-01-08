@@ -29,7 +29,7 @@ export class AuthService {
       ...dto,
       password: dto.password.length ? passwordHash : '',
     });
-    await this.customerService.getCustomer(String(newUser._id))//if not creates
+    await this.customerService.getCustomer(String(newUser._id))//mongodb _idsi objectId, stripe string qabul qiladi shunga stringa ogirib yuboramiz
     const token = await this.issueTokenPair(String(newUser._id));
 
     return { user: this.getUserField(newUser), ...token };

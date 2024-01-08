@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth } from '../auth/common/decorators/auth.decorator';
-import { CreateSectionDto } from './dto/create-section.dto';
-import { SectionService } from './section.service';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { CreateSectionDto } from 'src/section/dto/create-section.dto';
+import { SectionService } from 'src/section/section.service';
 
 @ApiTags('Section')
 @Controller('section')
@@ -11,8 +11,8 @@ export class SectionController {
 
   /**create section */
   @ApiOperation({ summary: 'create section' })
-  @ApiResponse({ status: 200, type: Promise<String> })
-  @HttpCode(200)
+  @ApiResponse({ status: 201, type: Promise<String> })
+  @HttpCode(201)
   @Post('create/:courseId')
   @Auth('INSTRUCTOR')
   async createSection(@Body() dto: CreateSectionDto, @Param('courseId') courseId: string) {

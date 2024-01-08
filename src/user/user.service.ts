@@ -3,14 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 // import { genSalt, hash, } from 'bcryptjs';
 import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
-
-
-import { User, UserDocument } from './schemas/user.schema';
-import { InterfaceEmailAndPassword, UpdateUserDto } from './dto/user.dto';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
+import { EmailAndPasswordDto, UpdateUserDto } from 'src/user/dto/user.dto';
+import { InjectStripe } from 'nestjs-stripe';
+import Stripe from 'stripe';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectStripe() private readonly stripeClient: Stripe,
+  ) { }
 
   /**find user by id */
   async byId(id: string) {
@@ -22,7 +25,7 @@ export class UserService {
   }
 
   /**user edit password */
-  async editPassword(dto: InterfaceEmailAndPassword) {
+  async editPassword(dto: EmailAndPasswordDto) {
     const { email, password } = dto;
 
     const existUser = await this.userModel.findOne({ email });
@@ -55,9 +58,15 @@ export class UserService {
 
     return user;
   }
-  /**
-   * Transactional method need to add
-   */
+  /** all Transactions */
+  async allTransactions(customerId: string) {
+    const transactions = await this.stripeClient.charges.list({
+      customer: customerId,
+      limit:100
+    })
+
+    return transactions.data
+   }
   
   /**my courses */
   async myCourses(userId: string) {

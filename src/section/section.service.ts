@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Course } from 'src/course/schemas/course.schema';
 import { Section } from 'src/section/schemas/section.schema';
-import { CreateSectionDto } from './dto/create-section.dto';
+import { CreateSectionDto } from 'src/section/dto/create-section.dto';
 
 @Injectable()
 export class SectionService {

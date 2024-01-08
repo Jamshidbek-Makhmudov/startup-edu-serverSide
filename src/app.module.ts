@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './auth/auth.module';
-import { getMongoDBConfig } from './config/mongo.config';
-import { CourseModule } from './course/course.module';
-import { MailModule } from './mail/mail.module';
-import { UserModule } from './user/user.module';
-import { InstructorModule } from './instructor/instructor.module';
-import { FileModule } from './file/file.module';
-import { SectionModule } from './section/section.module';
-import { ReviewModule } from './review/review.module';
-import { LessonModule } from './lesson/lesson.module';
-import { AdminModule } from './admin/admin.module';
-import { BooksModule } from './books/books.module';
-import { StripePaymentModule } from './payment/stripe-payment/stripe-payment.module';
-import { CustomerModule } from './customer/customer.module';
+import { AdminModule } from 'src/admin/admin.module';
+import { AuthModule } from 'src/auth/auth.module';
+import { BooksModule } from 'src/books/books.module';
+import { getMongoDBConfig } from 'src/config/mongo.config';
+import { CourseModule } from 'src/course/course.module';
+import { CustomerModule } from 'src/customer/customer.module';
+import { FileModule } from 'src/file/file.module';
+import { InstructorModule } from 'src/instructor/instructor.module';
+import { LessonModule } from 'src/lesson/lesson.module';
+import { MailModule } from 'src/mail/mail.module';
+import { StripePaymentModule } from 'src/payment/stripe-payment/stripe-payment.module';
+import { ReviewModule } from 'src/review/review.module';
+import { SectionModule } from 'src/section/section.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [

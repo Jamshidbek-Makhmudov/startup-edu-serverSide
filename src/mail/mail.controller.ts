@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MailService } from 'src/mail/mail.service';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
@@ -28,10 +28,10 @@ export class MailController {
   @ApiOperation({ summary: 'receive books' })
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
-  @Post('books/:bookdId')
+  @Post('books/:bookId')
   @Auth("USER")
-  async receiveBooks(@Param('bookId') bookId: string, @User("_id") _id:string) {
-    return this.mailService.receiveBooks(bookId,_id);
+  async recieveBooks(@Param('bookId') bookId: string, @User("_id") _id: string) {
+    return this.mailService.recieveBooks(bookId, _id);
   }
 
 }
