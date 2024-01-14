@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+  node:
+    container_name: james-edu_backend
+    restart: always
+    image: node:16.10.0
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/usr/scr/app
+    working_dir: /usr/scr/app
+
+    networks:
+      - james-edu_network
+
+    # PRODUCTION
+    command: bash -c "yarn install && yarn run start:prod"
+
+    # DEVELOPMENT
+    # command: bash -c "yarn install && yarn run dev"
+
+networks:
+  james-edu_network:
+    driver: bridge
