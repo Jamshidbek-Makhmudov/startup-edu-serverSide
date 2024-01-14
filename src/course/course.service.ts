@@ -85,15 +85,18 @@ export class CourseService {
   async getCourses(language: string, limit: string) {
     const courses = (await this.courseModel
       .aggregate([
+      /**bu yerda aggregatiyani yozishdan maqsad boshqa modeldigi malumotlarni id sigina korinib turadi populate qilganda ularni korsatib chiqarib olish uchun shu aggregatiya ishlatinidi */
         {
+          //equals to find method
           $match: { language },
         },
         {
+          //equals to populate method
           $lookup: {
-            from: 'users',
-            localField: 'author',
-            foreignField: '_id',
-            as: 'author',
+            from: 'users',//model name
+            localField: 'author', //qayerdan oladi
+            foreignField: '_id', //nima boyicha oladi
+            as: 'author', //qaysi nom bilan oladi
           },
         },
         {
@@ -113,6 +116,7 @@ export class CourseService {
           },
         },
         {
+        
           $lookup: {
             from: 'reviews',
             localField: '_id',
@@ -121,17 +125,20 @@ export class CourseService {
           },
         },
         {
+          /**yuqorida yozilgan review chiqmidi shuning uchun qoshimcha  field add qilib uni chiqarib olsak boladi*/
           $addFields: {
             reviewCount: { $size: '$reviews' },
             reviewAvg: { $avg: '$reviews.rating' },
           },
         },
         {
-          $unwind: '$author',
+          //arrayda keladigan datalarni objectga ozgartirib bweradi 
+          $unwind: '$author', //->  as: 'author', 
         },
         {
+          //return qilib clientga jonatishda yuboriladigan malumotlarni royhati bu bilan custom function yozishni olsa boladi
           $project: {
-            _id: 1,
+            _id: 1, // 1 equlas to true yani idni yubor degani
             author: 1,
             sections: {
               $map: {
@@ -141,9 +148,13 @@ export class CourseService {
                   _id: '$$section._id',
                   title: '$$section.title',
                   lessons: {
+                    /**lesson arrayda keadi uni ichidigalrni chiqarib omoqchi bose mongodb $mapidan foydalansak boladi itteratsiya qilayotganda
+                     * bunda input : qqaysini qilsin $lookupni ichidiga aslardan qidirish kere. as esa arr.amp(item) ga oxshab nomlab olish uchun kerak
+                     */
                     $map: {
                       input: '$lessons',
                       as: 'lesson',
+                      /**in array itteratisya qilganda arrayni ichidiglardan degani $$lesson esa tashqaridigi $lessonga chiqib ketmasligi uchun kerak*/
                       in: {
                         _id: '$$lesson._id',
                         name: '$$lesson.name',
