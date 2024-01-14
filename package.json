@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "submodule:pull": "git submodule foreach git pull origin master",
+    "docker": "docker-compose up --build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -18,7 +20,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch"
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch",
+    "test:nginx": "node ./test/nginx-test.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
