@@ -21,5 +21,9 @@
       "@submodule/*": ["submodule/src/*"],
       "@app/*": ["src/*"]
         }
-  }
+  },
+"include": [
+  "src/**/*.ts",
+  "src/**/*.hbs" // Add this line if not already present
+]
 }

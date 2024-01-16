@@ -14,7 +14,6 @@ const bootstrap = async () => {
 
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
-
     const config = new DocumentBuilder()
       .setTitle('James education project')
       .setDescription('REST API')
