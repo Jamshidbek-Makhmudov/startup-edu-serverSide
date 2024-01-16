@@ -12,6 +12,8 @@ import { Model } from 'mongoose';
 import { Book, BooksDocument } from 'src/books/schemas/book.schema';
 import { Otp, OtpDocument } from 'src/mail/schemas/otp.schema';
 import { User, UserDocument } from 'src/user/schemas/user.schema';
+import { ContactUseDto } from './dto/mail.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class MailService {
@@ -20,6 +22,7 @@ export class MailService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Book.name) private booksModel: Model<BooksDocument>,
     private readonly configService: ConfigService,
+    private mailerService: MailerService,
   ) {
     SendGrid.setApiKey(this.configService.get<string>('SEND_GRID_KEY'));
   }
@@ -108,4 +111,42 @@ export class MailService {
     await SendGrid.send(emailData);
     return 'Success';
   }
+  /**contact us with sendgrid */
+  // async contactUs(dto: ContactUseDto) {
+    
+  //   const emailData = {
+  //     to: this.configService.get<string>('MAILDEV_USER'),
+  //     subject: 'Contact Us',
+  //     from: this.configService.get<string>('SENDGRID_HOST_EMAIL'),
+  //     html: `
+  //     <div>Name: ${dto.name}</div>
+  //     <div>Email: ${dto.email}</div>
+  //     <div>Message: ${dto.message}</div>
+  //     `,
+  //   };
+
+  //   await SendGrid.send(emailData);
+  //   return 'Success';
+  // }
+
+
+   /**contact us with mailer */
+  async contactUs(dto: ContactUseDto): Promise<void> {
+  try {
+      await this.mailerService.sendMail({   
+      to: this.configService.get<string>('MAILDEV_USER'),
+      from: "james@dataprotec.co.kr",
+      subject: 'Contact Us',
+      template: './contact',
+      context: {
+        name: dto.name,
+        email: dto.email,
+        message: dto.message,
+      },  
+    });
+  } catch(error) {
+        console.log(error);      
+    }
+}
+
 }

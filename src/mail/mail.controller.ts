@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MailService } from 'src/mail/mail.service';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
 import { User } from 'src/user/decorators/user.decorator';
+import { ContactUseDto } from 'src/mail/dto/mail.dto';
 
 @ApiTags('Mail')
 @Controller('mail')
@@ -32,6 +33,15 @@ export class MailController {
   @Auth("USER")
   async recieveBooks(@Param('bookId') bookId: string, @User("_id") _id: string) {
     return this.mailService.recieveBooks(bookId, _id);
+  }
+
+  /**contact-su */
+  @ApiOperation({ summary: 'contact-us' })
+  @ApiResponse({ status: 200, type: Promise<String> })
+  @HttpCode(200)
+  @Post('contact-us')
+  async contactUs(@Body() dto:ContactUseDto) {
+    return this.mailService.contactUs(dto);
   }
 
 }

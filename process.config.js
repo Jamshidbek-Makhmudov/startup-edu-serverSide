@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: "ULTRAGEAR",
+      name: "james-edu",
       cwd: "./",
-      script: "./main.ts",
+      script: "./src/main.ts",
       watch: "false",
       env_production: {
         NODE_ENV: "production",
