@@ -1,10 +1,11 @@
 import { Body, Controller, Get, HttpCode, Put } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
-import { User } from 'src/user/decorators/user.decorator';
+import { User as UserDecorator } from 'src/user/decorators/user.decorator';
 import { EmailAndPasswordDto, UpdateUserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
+import { User  } from 'src/user/schemas/user.schema';
 
 @ApiTags('User')
 @Controller('user')
@@ -13,11 +14,11 @@ export class UserController {
 
   /**find user by id */
   @ApiOperation({ summary: "get user's datas" })
-  @ApiResponse({ status: 200, type: Promise<String> })
+  @ApiResponse({ status: 200, type: Promise<String>, description: 'successfule got user' })
   @HttpCode(200)
   @Get('profile')
   @Auth()
-  async getProfile(@User('_id') _id: string) {
+  async getProfile(@UserDecorator('_id') _id: string):Promise<User> {
     return this.userService.byId(_id);
   }
 
@@ -26,7 +27,7 @@ export class UserController {
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Put('edit-password')
-  async editPassword(@Body() dto: EmailAndPasswordDto) {
+  async editPassword(@Body() dto: EmailAndPasswordDto):Promise<string> {
     return this.userService.editPassword(dto);
   }
 
@@ -36,7 +37,7 @@ export class UserController {
   @HttpCode(200)
   @Put('update')
   @Auth()
-  async updateUser(@Body() dto: UpdateUserDto, @User("_id") _id:string) {
+  async updateUser(@Body() dto: UpdateUserDto, @UserDecorator("_id") _id:string) {
     return this.userService.updateUser(dto, _id);
   }
 
@@ -46,7 +47,7 @@ export class UserController {
   @HttpCode(200)
   @Get('transactions')
   @Auth()
-  async allTransactions(@User("customerId") customerId:string) {
+  async allTransactions(@UserDecorator("customerId") customerId:string) {
     return this.userService.allTransactions(customerId);
   }
 
@@ -56,7 +57,7 @@ export class UserController {
   @HttpCode(200)
   @Get('my-courses')
   @Auth()
-  async myCourses(@User("_id") _id:string) {
+  async myCourses(@UserDecorator("_id") _id:string) {
     return this.userService.myCourses(_id);
   }
 }

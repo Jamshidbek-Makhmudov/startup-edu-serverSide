@@ -24,7 +24,7 @@ export class CourseController {
   /**create */
   @ApiOperation({ summary: 'create course for Instructors' })
   @ApiResponse({ status: 200, type: Promise<String> })
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('create')
   @Auth('INSTRUCTOR')
   async createCourse(@Body() dto: CourseBodyDto, @User('_id') _id: string) {

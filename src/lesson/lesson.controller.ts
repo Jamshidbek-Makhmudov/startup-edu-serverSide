@@ -13,7 +13,7 @@ export class LessonController {
   /**create lesson */
   @ApiOperation({ summary: 'create lesson' })
   @ApiResponse({ status: 200, type: Promise<String> })
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('create/:sectionId')
   @Auth('INSTRUCTOR')
   async createLesson(@Body() dto: CreateLessonDto, @Param('sectionId') sectionId: string) {
