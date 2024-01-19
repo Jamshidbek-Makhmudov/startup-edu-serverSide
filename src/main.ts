@@ -12,13 +12,13 @@ const bootstrap = async () => {
     const PORT = configServe.get<number>('API_PORT');
     app.use(cookieParser());
 
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix('/api'); //added new
     app.useGlobalPipes(new ValidationPipe());
     const config = new DocumentBuilder()
       .setTitle('James education project')
       .setDescription('REST API')
       .setVersion('1.0.0')
-      .addTag('Nestjs, Mongodb, Type orm ') //check it Type orm
+      .addTag('Nestjs, Mongodb, Mongoose ') //check it Type orm
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

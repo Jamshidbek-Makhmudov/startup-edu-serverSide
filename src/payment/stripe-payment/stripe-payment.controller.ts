@@ -44,7 +44,7 @@ export class StripePaymentController {
   /**create subscription */
   @ApiOperation({ summary: "create subscription" })
   @ApiResponse({ status: 200, type: Promise<String> })
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('create-subscription')
   @Auth("USER")
   createSubscription(@User("_id") _id:string, @Body() dto:BooksStripePaymentDto) {
