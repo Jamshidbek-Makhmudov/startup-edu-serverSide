@@ -13,7 +13,7 @@ export class BooksController {
    
   @ApiOperation({ summary: 'create' })
   @ApiResponse({ status: 200, type: Promise<String> })
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('create')
   @Auth('ADMIN')
   create(@Body() createBookDto: CreateBookDto) {

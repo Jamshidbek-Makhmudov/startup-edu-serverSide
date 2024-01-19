@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input EmailAndPasswordDto {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  """edit user's password"""
+  editPassword(editPassword: EmailAndPasswordDto!): String!
+
+  """update an existing user"""
+  updateUser(updateUser: UpdateUserDto!): User!
+}
+
+type Query {
+  """getrs user's transactions"""
+  allTransactions: String!
+  getProfile: User!
+}
+
+input UpdateUserDto {
+  avatar: String
+  bio: String
+  birthday: String
+  firstName: String
+  job: String
+  lastName: String
+}
+
+type User {
+  avatar: String
+  bio: String
+  birthday: String
+  createdAt: String!
+  customerId: String
+  email: String!
+  fullName: String
+  instructorAccountId: String
+  job: String
+  role: String!
+}
