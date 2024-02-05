@@ -4,10 +4,10 @@ import { InjectModel } from '@nestjs/mongoose';
 // import { compare, genSalt, hash } from 'bcryptjs';
 import * as bcrypt from 'bcryptjs';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { LoginAuthDto } from 'src/auth/dto/login.dto';
 import { TokenDto } from 'src/auth/dto/token.dto';
 import { CustomerService } from 'src/customer/customer.service';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly customerService: CustomerService,
   ) {}
 
-  async register(dto: LoginAuthDto) {
+  async register(dto: LoginAuthDto): Promise<any> {
     const existUser = await this.isExistUser(dto.email);
     if (existUser) throw new BadRequestException('already_exist');
 
@@ -29,7 +29,7 @@ export class AuthService {
       ...dto,
       password: dto.password.length ? passwordHash : '',
     });
-    await this.customerService.getCustomer(String(newUser._id))//mongodb _idsi objectId, stripe string qabul qiladi shunga stringa ogirib yuboramiz
+    await this.customerService.getCustomer(String(newUser._id)); //mongodb _idsi objectId, stripe string qabul qiladi shunga stringa ogirib yuboramiz
     const token = await this.issueTokenPair(String(newUser._id));
 
     return { user: this.getUserField(newUser), ...token };
@@ -44,7 +44,7 @@ export class AuthService {
       if (!currentPassword) throw new BadRequestException('incorrect_password');
     }
 
-    await this.customerService.getCustomer(String(existUser._id))
+    await this.customerService.getCustomer(String(existUser._id));
     const token = await this.issueTokenPair(String(existUser._id));
     return { user: this.getUserField(existUser), ...token };
   }

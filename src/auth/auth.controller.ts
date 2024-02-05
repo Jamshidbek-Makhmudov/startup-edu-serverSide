@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
+import { Auth } from 'src/auth/common/decorators/auth.decorator';
 import { LoginAuthDto } from 'src/auth/dto/login.dto';
 import { TokenDto } from 'src/auth/dto/token.dto';
 import { User } from 'src/user/decorators/user.decorator';
-import { Auth } from 'src/auth/common/decorators/auth.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -13,7 +13,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Register' })
   @ApiResponse({ status: 200, type: Promise<LoginAuthDto> })
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe()) //middle level
   @HttpCode(200)
   @Post('register')
   async register(@Body() dto: LoginAuthDto) {
@@ -50,7 +50,7 @@ export class AuthController {
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Get('check-instructor')
-  @Auth("INSTRUCTOR")
+  @Auth('INSTRUCTOR')
   async checkInstructor(@User('_id') _id: string) {
     return _id ? true : false;
   }

@@ -7,9 +7,19 @@ input EmailAndPasswordDto {
   password: String!
 }
 
+input LoginAuthDto {
+  avatar: String
+  email: String!
+  fullName: String
+  password: String!
+}
+
 type Mutation {
   """edit user's password"""
   editPassword(editPassword: EmailAndPasswordDto!): String!
+
+  """register user"""
+  register(dto: LoginAuthDto!): RegisterResponseDto!
 
   """update an existing user"""
   updateUser(updateUser: UpdateUserDto!): User!
@@ -17,8 +27,14 @@ type Mutation {
 
 type Query {
   """getrs user's transactions"""
-  allTransactions: String!
+  allTransactions: [String!]!
   getProfile: User!
+}
+
+type RegisterResponseDto {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
 }
 
 input UpdateUserDto {

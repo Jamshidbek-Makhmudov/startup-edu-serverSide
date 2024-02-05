@@ -1,11 +1,12 @@
 import { Body, Controller, Get, HttpCode, Put } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
+import { Course } from 'src/course/schemas/course.schema';
 import { User as UserDecorator } from 'src/user/decorators/user.decorator';
 import { EmailAndPasswordDto, UpdateUserDto } from 'src/user/dto/user.dto';
+import { User } from 'src/user/schemas/user.schema';
 import { UserService } from 'src/user/user.service';
-import { User  } from 'src/user/schemas/user.schema';
+import Stripe from 'stripe';
 
 @ApiTags('User')
 @Controller('user')
@@ -18,7 +19,7 @@ export class UserController {
   @HttpCode(200)
   @Get('profile')
   @Auth()
-  async getProfile(@UserDecorator('_id') _id: string):Promise<User> {
+  async getProfile(@UserDecorator('_id') _id: string): Promise<User> {
     return this.userService.byId(_id);
   }
 
@@ -27,7 +28,7 @@ export class UserController {
   @ApiResponse({ status: 200, type: Promise<String> })
   @HttpCode(200)
   @Put('edit-password')
-  async editPassword(@Body() dto: EmailAndPasswordDto):Promise<string> {
+  async editPassword(@Body() dto: EmailAndPasswordDto): Promise<string> {
     return this.userService.editPassword(dto);
   }
 
@@ -37,7 +38,7 @@ export class UserController {
   @HttpCode(200)
   @Put('update')
   @Auth()
-  async updateUser(@Body() dto: UpdateUserDto, @UserDecorator("_id") _id:string) {
+  async updateUser(@Body() dto: UpdateUserDto, @UserDecorator('_id') _id: string): Promise<User> {
     return this.userService.updateUser(dto, _id);
   }
 
@@ -47,7 +48,7 @@ export class UserController {
   @HttpCode(200)
   @Get('transactions')
   @Auth()
-  async allTransactions(@UserDecorator("customerId") customerId:string) {
+  async allTransactions(@UserDecorator('customerId') customerId: string): Promise<Stripe.Charge[]> {
     return this.userService.allTransactions(customerId);
   }
 
@@ -57,7 +58,7 @@ export class UserController {
   @HttpCode(200)
   @Get('my-courses')
   @Auth()
-  async myCourses(@UserDecorator("_id") _id:string) {
+  async myCourses(@UserDecorator('_id') _id: string): Promise<Course[]> {
     return this.userService.myCourses(_id);
   }
 }
