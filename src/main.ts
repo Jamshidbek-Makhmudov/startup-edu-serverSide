@@ -18,7 +18,7 @@ const bootstrap = async () => {
       .setTitle('James education project')
       .setDescription('REST API')
       .setVersion('1.0.0')
-      .addTag('Nestjs, Mongodb, Mongoose ') //check it Type orm
+      .addTag('Nestjs, Mongodb, Mongoose ')
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
