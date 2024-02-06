@@ -47,12 +47,12 @@ export class UserService {
 
   /**user update password */
   async updateUser(body: UpdateUserDto, userId: string): Promise<User> {
-    const { avatar, firstName, lastName, bio, birthday, job } = body;
+    const { avatar, firstName, lastName, bio, birthday, job, imageUrl } = body;
 
     const user = await this.userModel.findByIdAndUpdate(
       userId,
       {
-        $set: { fullName: `${firstName} ${lastName}`, avatar, bio, birthday, job },
+        $set: { fullName: `${firstName} ${lastName}`, avatar, bio, birthday, job,imageUrl },
       },
       { new: true },
     );
