@@ -78,6 +78,11 @@ export class User {
   //   @Field((type) => [Review], { nullable: true })
   @Prop([{ type: SchemaMS.Types.ObjectId, ref: 'Review' }])
   reviews: Review[];
+
+    @ApiProperty({ example: 'image', description: "user's image from aws bucket", type: String })
+  @Field({ nullable: true })
+  @Prop()
+  imageUrl: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

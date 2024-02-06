@@ -42,6 +42,7 @@ input UpdateUserDto {
   bio: String
   birthday: String
   firstName: String
+  imageUrl: String
   job: String
   lastName: String
 }
@@ -54,6 +55,7 @@ type User {
   customerId: String
   email: String!
   fullName: String
+  imageUrl: String
   instructorAccountId: String
   job: String
   role: String!

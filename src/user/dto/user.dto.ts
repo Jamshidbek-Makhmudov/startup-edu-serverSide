@@ -47,4 +47,9 @@ export class UpdateUserDto {
   @Field({nullable:true})
   @IsString()
   avatar: string;
+
+  @ApiProperty({ example: "123143adsda.png", description: "imga efrom aws" })
+  @Field({nullable:true})
+  @IsString()
+  imageUrl?: string;
 }

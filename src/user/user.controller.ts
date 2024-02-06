@@ -38,7 +38,9 @@ export class UserController {
   @HttpCode(200)
   @Put('update')
   @Auth()
-  async updateUser(@Body() dto: UpdateUserDto, @UserDecorator('_id') _id: string): Promise<User> {
+  async updateUser(@Body() dto: UpdateUserDto, @UserDecorator('_id') _id: string){
+    
+    
     return this.userService.updateUser(dto, _id);
   }
 
