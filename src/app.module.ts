@@ -17,6 +17,7 @@ import { StripePaymentModule } from 'src/payment/stripe-payment/stripe-payment.m
 import { ReviewModule } from 'src/review/review.module';
 import { SectionModule } from 'src/section/section.module';
 import { UserModule } from 'src/user/user.module';
+import { AwsS3ServiceModule } from './aws-s3-service/aws-s3-service.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { UserModule } from 'src/user/user.module';
     BooksModule,
     StripePaymentModule,
     CustomerModule,
+    AwsS3ServiceModule,
   ],
 })
 export class AppModule {}

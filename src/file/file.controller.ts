@@ -22,4 +22,20 @@ export class FileController {
 
     return this.fileService.saveFile(file, folder);
   }
+
+  /**uplod file to aws bucket */
+  @ApiOperation({ summary: 'upload files' })
+  // @ApiResponse({ status: 200, type: Promise<FileResponseDto> })
+  @Post('upload')
+  @HttpCode(200)
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File,@Query('folder') folder?: string,) {
+
+  
+    return this.fileService.uploadFile(file);
+  }
+
+
+
+
 }
