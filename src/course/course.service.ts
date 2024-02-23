@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CourseBodyDto } from 'src/course/dto/course.dto';
@@ -27,15 +27,20 @@ export class CourseService {
         .replace(/^-+|-+$/g, '');
 
     const slug = slugify(dto.title);
-
-    const course = await this.courseModel.create({ ...dto, slug: slug, author: id });
-
-    await this.instructorModel.findOneAndUpdate(
-      { author: id },
-      { $push: { courses: course._id } },
-      { new: true },
-    );
-    return 'Success';
+    try {
+      
+      const course = await this.courseModel.create({ ...dto, slug: slug, author: id });
+      
+      await this.instructorModel.findOneAndUpdate(
+        { author: id },
+        { $push: { courses: course._id } },
+        { new: true },
+        );
+        return 'Success';
+    } catch (error) {
+       throw new UnprocessableEntityException(error);
+        
+      }
   }
 
   async editCourse(dto: CourseBodyDto, courseId: string) {

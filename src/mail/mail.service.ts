@@ -104,7 +104,7 @@ export class MailService {
       to: user.email,
       subject: 'Ordered Book',
       from: 'james@dataprotec.co.kr',
-      html: `<h1>Hi dear ${user.fullName}, this is the link for your ordered book please follow the link and download your book.</h1>
+      html: `<h1>Hi dear ${user.fullName ? user.fullName : "Client"}, this is the link for your ordered book please follow the link and download your book.</h1>
       <a href="${book.pdf}">Your ordered book - ${book.title}</a>`,
     };
 

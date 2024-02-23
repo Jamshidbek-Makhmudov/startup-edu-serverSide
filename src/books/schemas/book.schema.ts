@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import { HydratedDocument } from "mongoose";
+import { BookCategory } from "src/books/dto/schema.dto";
 
 export type BooksDocument = HydratedDocument<Book>
 
@@ -23,8 +24,11 @@ export class Book {
 	pdf: string
 	
 	@ApiProperty({ example: 'IT', description: "category" })
-	@Prop()
+	@Prop({ enum: BookCategory, default: BookCategory.programming })
 	category:string
 }
 
-export const BookSchema=SchemaFactory.createForClass(Book)
+ export const BookSchema=SchemaFactory.createForClass(Book)
+
+
+
