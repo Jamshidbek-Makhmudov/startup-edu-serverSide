@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
 import { InstructorApplyDto } from 'src/instructor/dto/instructor.dto';
 import { InstructorService } from 'src/instructor/instructor.service';
@@ -34,6 +34,7 @@ export class InstructorController {
   /**get detailed courses */
   @ApiOperation({ summary: 'get detailed courses' })
   @ApiResponse({ status: 200, type: Promise<String> })
+  @ApiParam({ name: 'slug', description: 'slug for get datailed course' }) //
   @HttpCode(200)
   @Get('course/:slug')
   @Auth('INSTRUCTOR')
@@ -43,6 +44,8 @@ export class InstructorController {
   /**get all instructors */
   @ApiOperation({ summary: 'get all instrucotrs' })
   @ApiResponse({ status: 200, type: Promise<String> })
+  @ApiQuery({ name: 'language', required: true })
+  @ApiQuery({ name: 'limit', required: true })
   @HttpCode(200)
   @Get('all')
   async getInstructors(@Query('language') language: string, @Query('limit') limit: string) {

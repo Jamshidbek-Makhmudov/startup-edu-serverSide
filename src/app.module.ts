@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AdminModule } from 'src/admin/admin.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { BooksModule } from 'src/books/books.module';
@@ -17,13 +18,15 @@ import { StripePaymentModule } from 'src/payment/stripe-payment/stripe-payment.m
 import { ReviewModule } from 'src/review/review.module';
 import { SectionModule } from 'src/section/section.module';
 import { UserModule } from 'src/user/user.module';
-import { AwsS3ServiceModule } from './aws-s3-service/aws-s3-service.module';
+
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
+
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -49,7 +52,13 @@ import { AwsS3ServiceModule } from './aws-s3-service/aws-s3-service.module';
     BooksModule,
     StripePaymentModule,
     CustomerModule,
-    AwsS3ServiceModule,
+
+    // Other modules...
+    ThrottlerModule.forRoot({
+      ttl: 60, // seconds
+      limit: 10, // requests per TTL
+    }),
+
   ],
 })
 export class AppModule {}
