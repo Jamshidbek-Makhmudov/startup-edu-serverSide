@@ -1,6 +1,6 @@
-import { Controller, HttpCode, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileResponseDto } from 'src/file/dto/file-response';
 import { FileService } from 'src/file/file.service';
 
@@ -12,6 +12,7 @@ export class FileController {
   @ApiOperation({ summary: 'upload files' })
   @ApiResponse({ status: 200, type: Promise<FileResponseDto> })
   @Post('save')
+  @ApiConsumes('multipart/form-data')
   @HttpCode(200)
   @UseInterceptors(FileInterceptor('image'))
   async saveFile(
@@ -25,15 +26,48 @@ export class FileController {
 
   /**uplod file to aws bucket */
   @ApiOperation({ summary: 'upload files' })
-  // @ApiResponse({ status: 200, type: Promise<FileResponseDto> })
+  @ApiResponse({ status: 200, type: Promise<FileResponseDto> })
   @Post('upload')
+  @ApiConsumes('multipart/form-data')
   @HttpCode(200)
   @UseInterceptors(FileInterceptor('image'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File,@Query('folder') folder?: string,) {
-
-  
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Query('folder') folder?: string,) {
+    console.log(file)
     return this.fileService.uploadFile(file);
   }
+
+  /**download from aws s3 */
+  @Post('download')
+  downloadFile(@Body() data: any) {
+    // console.log(data.fileName)
+    try {
+      return this.fileService.downloadFile(data)
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+
+
+
+
+  
+  /**upload large files on aws s3 */
+  @Post('create-multipart')
+  async createMultiPart(@Body() body: any) {
+        return await this.fileService.createMultipartUpload(body);
+  } 
+  
+   @Post('get-presigned-url')
+    async getPresignedUrl(@Body() body: any) {
+        return await this.fileService.getPreSignedUrl(body);
+    }
+
+  @Post('complete-multipart')
+    async completeMultiPart(@Body() body: any) {
+        return await this.fileService.completeMultiPart(body);
+    }
+
 
 
 

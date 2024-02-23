@@ -28,3 +28,12 @@ export class LoginAuthDto {
   @IsOptional()
   avatar?: string;
 }
+@InputType()
+export class CheckUserDto {
+  @ApiProperty({ example: 'example@mail.com', description: `user's email` })
+  @Field()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+}
