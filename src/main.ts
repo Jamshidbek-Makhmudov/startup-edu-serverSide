@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from 'src/app.module';
 import * as dotenv from 'dotenv';
+import { testLogger } from 'src/services/test-logger';
 
 
 /**coming soon => logger  */
@@ -12,11 +13,20 @@ import * as dotenv from 'dotenv';
 // const logger = new Logger('Bootstrap');
 
 const bootstrap = async () => {
+
   try {
     //coming soon => config the environment
    const nodeEnv = process.env.NODE_ENV || 'development';
   const envFile = `.env.${nodeEnv}`;
-  dotenv.config({ path: envFile });
+    dotenv.config({ path: envFile });
+    
+    /**logging errors: */
+    // testLogger.log("info", "log");
+    testLogger.error("error");
+    // testLogger.debug("debug");
+    // testLogger.warn("warn");
+    // testLogger.info("info");
+
 
     const app = await NestFactory.create(AppModule);
     const configServe = app.get(ConfigService);
