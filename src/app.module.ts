@@ -19,20 +19,17 @@ import { ReviewModule } from 'src/review/review.module';
 import { SectionModule } from 'src/section/section.module';
 import { UserModule } from 'src/user/user.module';
 
-
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
-
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
       sortSchema: true,
-      playground:true
+      playground: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -58,7 +55,6 @@ import { UserModule } from 'src/user/user.module';
       ttl: 60, // seconds
       limit: 10, // requests per TTL
     }),
-
   ],
 })
 export class AppModule {}
