@@ -1,9 +1,9 @@
-import { ValidationPipe } from '@nestjs/common';
+// import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 import { AppModule } from 'src/app.module';
 // import { testLogger } from 'src/services/test-logger';
 
@@ -14,9 +14,9 @@ import { AppModule } from 'src/app.module';
 const bootstrap = async () => {
   try {
     //coming soon => config the environment
-    const nodeEnv = process.env.NODE_ENV || 'development';
-    const envFile = `.env.${nodeEnv}`;
-    dotenv.config({ path: envFile });
+    // const nodeEnv = process.env.NODE_ENV || 'development';
+    // const envFile = `.env.${nodeEnv}`;
+    // dotenv.config({ path: envFile });
 
     /**logging errors: */
     // testLogger.log("info", "log");
@@ -31,7 +31,7 @@ const bootstrap = async () => {
     app.use(cookieParser());
 
     app.setGlobalPrefix('/api');
-    app.useGlobalPipes(new ValidationPipe());
+    // app.useGlobalPipes(new ValidationPipe());
     const config = new DocumentBuilder()
       .setTitle('James education project')
       .setDescription('REST API')
@@ -42,8 +42,8 @@ const bootstrap = async () => {
 
     const document = SwaggerModule.createDocument(app, config);
 
-    const globalSecurity = [{ bearerAuth: [] }];
-    document.security = globalSecurity;
+    // const globalSecurity = [{ bearerAuth: [] }];
+    // document.security = globalSecurity;
 
     SwaggerModule.setup('/api/docs', app, document);
     app.enableCors();
