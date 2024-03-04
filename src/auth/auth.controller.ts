@@ -1,6 +1,6 @@
-import { Body, Controller, Get, HttpCode, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ThrottlerGuard } from '@nestjs/throttler';
+// import { ThrottlerGuard } from '@nestjs/throttler';
 import { AuthService } from 'src/auth/auth.service';
 import { Auth } from 'src/auth/common/decorators/auth.decorator';
 import { CheckUserDto, LoginAuthDto } from 'src/auth/dto/login.dto';
@@ -9,7 +9,7 @@ import { User } from 'src/user/decorators/user.decorator';
 
 @ApiTags('Auth')
   @Controller('auth')
-@UseGuards(ThrottlerGuard) //throttler  limiting request to this controller
+//@UseGuards(ThrottlerGuard) //throttler  limiting request to this controller
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
