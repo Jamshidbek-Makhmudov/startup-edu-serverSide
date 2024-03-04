@@ -16,14 +16,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@submodule/*": ["submodule/src/*"],
-      "@app/*": ["src/*"]
-        }
-  },
-"include": [
-  "src/**/*.ts",
-  "src/**/*.hbs" // Add this line if not already present
-]
+    "noFallthroughCasesInSwitch": false
+    // "paths": {
+    //   "@submodule/*": ["submodule/src/*"],
+    //   "@app/*": ["src/*"]
+    // }
+  }
+  // "include": [
+  //   "src/**/*.ts",
+  //   "src/**/*.hbs", // Add this line if not already present
+  //   "tests/**/*",
+  //   "**/*.spec.ts",
+  //   "**/*.test.ts"
+  // ],
+  // "exclude": ["**/tests/*.test.ts"]
 }

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ThrottlerModule } from '@nestjs/throttler';
+// import { ThrottlerModule } from '@nestjs/throttler';
 import { AdminModule } from 'src/admin/admin.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { BooksModule } from 'src/books/books.module';
@@ -19,20 +19,17 @@ import { ReviewModule } from 'src/review/review.module';
 import { SectionModule } from 'src/section/section.module';
 import { UserModule } from 'src/user/user.module';
 
-
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
-
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
       sortSchema: true,
-      playground:true
+      playground: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -54,11 +51,10 @@ import { UserModule } from 'src/user/user.module';
     CustomerModule,
 
     // Other modules...
-    ThrottlerModule.forRoot({
-      ttl: 60, // seconds
-      limit: 10, // requests per TTL
-    }),
-
+    // ThrottlerModule.forRoot({
+    //   ttl: 60, // seconds
+    //   limit: 10, // requests per TTL
+    // }),
   ],
 })
 export class AppModule {}
