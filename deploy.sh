@@ -6,7 +6,8 @@ git reset --hard
 git pull origin main
 npm i yarn -g
 yarn global add serve
-yarn install --froce
+yarn install --force
+
 # yarn
 yarn run build
 pm2 start "yarn run start:prod" --name=STARTUP_EDU_SERVER
